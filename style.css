@@ -3,13 +3,13 @@
  */
 
 pre, .download {
+	color: white;
+	text-shadow: .05em .05em .2em rgba(0,0,0,.5);
 	background-image: -moz-linear-gradient(transparent, rgba(10,0,0,.3));
 	background-image: -ms-linear-gradient(transparent, rgba(10,0,0,.3));
 	background-image: -o-linear-gradient(transparent, rgba(10,0,0,.3));
 	background-image: -webkit-linear-gradient(transparent, rgba(10,0,0,.3));
 	background-image: linear-gradient(transparent, rgba(10,0,0,.3));
-	color: white;
-	text-shadow: .05em .05em .2em rgba(0,0,0,.5);
 }
 
 h2, h3, footer, .download {
@@ -82,25 +82,32 @@ pre + p {
 
 pre {
 	position: relative;
-	padding: 1.5em;
+	padding: .6em;
 	margin: 1em -1.3em;
 	background-color: #433;
 	background-color: rgba(25,0,0,.7);
-	outline: 1px dashed rgba(255, 255, 255, .5);
-	outline-offset: -8px;
 	border-radius: .5em;
 	box-shadow: 1px 2px 8px -2px black;
+	
 }
 
-	pre:after {
+	pre > code {
+		display: block;
+		position: relative;
+		z-index: 0;
+		padding: .6em .8em;
+		border: 1px dashed rgba(255, 255, 255, .5);
+	}
+	
+	pre > code:after {
 		content: '';
 		position: absolute;
-		top: 8px;
-		right: 6px;
-		bottom: 6px;
-		left: 8px;
+		top: 0;
+		right: -2px;
+		bottom: -2px;
+		left: 0;
+		z-index: -1;
 		border: 1px dashed black;
-		pointer-events: none;
 	}
 
 a {
