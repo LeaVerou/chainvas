@@ -1,7 +1,6 @@
 /**
- * Chainvas: Chain canvas functions and other canvas enhancements
+ * Chainvas: Make APIs chainable and enhance the canvas API
  * @author Lea Verou
- * Credits: Mathieu Henri came up with the original idea before I did
  * MIT license http://www.opensource.org/licenses/mit-license.php
  */
 
@@ -15,16 +14,49 @@ var self = window.Chainvas = {
 		}
 	},
 	
-	chainize: function(prototype) {
+	chainablize: function(prototype) {
+		// Chainablize existing methods
 		for(var method in prototype) {
-			if(prototype.hasOwnProperty(method) && typeof prototype[method] === 'function') {
-				try {
+			try {
+				if(prototype.hasOwnProperty(method) && typeof prototype[method] === 'function') {
 					prototype[method] = self.chainable(prototype[method]);
+				}
+			} catch(e) {}
+		}
+		
+		// Add extra helpers
+		for(var method in self.methods) {
+			if(!(method in prototype)) {
+				try {
+					prototype[method] = self.methods[method];
 				} catch(e) {}
 			}
 		}
+	},
+	
+	// Generic methods that make working with chainablized objects easier
+	methods: {
+		// Generic chainable method for setting properties
+		prop: function() {
+			if (arguments.length === 1) {
+				var object = arguments[0];
+				
+				for(var property in object) {
+					if(object.hasOwnProperty(property)) {
+						this[property] = object[property];
+					}
+				}
+			}
+			else if (arguments.length == 2) {
+				this[arguments[0]] = arguments[1];
+			}
+			
+			return this;
+		}
 	}
 };
+
+// It's all about <canvas> from now on
 
 var Ctx = window.CanvasRenderingContext2D;
 
@@ -32,31 +64,7 @@ if(!Ctx) {
 	return;
 }
 
-self.chainize(Ctx.prototype);
-
-/**********************
- * Additional helpers 
- **********************/
- 
-/**
- * Set a ctx property (e.g. lineWidth or fillStyle)
- */
-Ctx.prototype.set = function() {
-	if(arguments.length == 1) {
-		var object = arguments[0];
-		
-		for(var property in object) {
-			if(object.hasOwnProperty(property)) {
-				this[property] = object[property];
-			}
-		}
-	}
-	else if(arguments.length == 2) {
-		this[arguments[0]] = arguments[1];
-	}
-	
-	return this;
-}
+self.chainablize(Ctx.prototype);
 
 Ctx.prototype.circle = function(x, y, r) {
 	return this.beginPath().arc(x, y, r, 0, 2*Math.PI, false).closePath();
