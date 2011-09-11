@@ -4,7 +4,7 @@
 **chainvas** is a tiny library that adds chaining and various helper methods to the canvas API. Additionally, it can make every API chainable.
 
 ## How does it work?
-**chainvas** adds methods to the prototype of `CanvasRenderingContext2D` (the object you get when you call `canvas.getContext('2d')` is a `CanvasRenderingContext2D` object) and replaces the existing ones with a wrapper that calls the original function and returns `this` if and only if the function didn't return `undefined`. It automatically detects which methods are present, which saves filesize and makes it much more flexible.
+**chainvas** adds methods to the prototype of `CanvasRenderingContext2D` (the object you get when you call `canvas.getContext('2d')` is a `CanvasRenderingContext2D` object) and replaces the existing ones with a wrapper that calls the original function and returns `this` if and only if the function originally returned `undefined`. It automatically detects which methods are present, which saves filesize and makes it much more flexible.
 
 Also, most of the code is written in a generic way, so you can use it to make other APIs chainable, even if completely unrelated to &lt;canvas&gt;. There is a global `Chainvas` object, with the following methods:
 
