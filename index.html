@@ -1,0 +1,72 @@
+<!doctype html> 
+<html lang="en"> 
+<head> 
+
+<meta charset="utf-8" />
+<title>chainvas: A better canvas helper</title>	
+<link href="style.css" rel="stylesheet" />
+
+</head> 
+<body> 
+
+<hgroup>
+	<h1 id="chainvas">chainvas</h1>
+	<h2 id="abettercanvashelper">A better canvas helper</h2>
+</hgroup>
+
+<p class="promo"><strong>chainvas</strong> is an extra lightweight library that adds chaining and various helper methods to the canvas API
+	to let you produce more readable code, faster!</p>
+	
+<a href="" class="download" title="Click to download ->">Only <strong>1KB</strong> minified</a>
+
+<a href="http://github.com/LeaVerou" class="github"><img src="https://a248.e.akamai.net/assets.github.com/img/5d21241b64dc708fcbb701f68f72f41e9f1fadd6/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub"></a>
+
+<h2 id="documentation">Documentation</h2>
+
+<h3 id="chaining">Chaining</h3>
+
+<p><strong>chainvas</strong> alters the native methods on the canvas’ context, so that they are chainable, allowing you to do things like this:</p>
+
+<pre><code>ctx.beginPath()
+    .set({
+        lineWidth: 2,
+        strokeStyle: '#333'
+    }).moveTo(0,0)
+    .bezierCurveTo(50,50, 80,80, 100,100)
+    .stroke().closePath();</code></pre>
+
+<h3 id="helpermethods">Helper methods</h3>
+
+<pre><code>set(values)
+set(property, value)</code></pre>
+
+<p>Helpful for setting properties like <code>lineWidth</code>, <code>strokeStyle</code> etc in a more readable way and without  breaking the code chain.</p>
+
+<pre><code>circle(x, y, radius)</code></pre>
+
+<p>Draws a circle. You still have to call <code>stroke()</code> or <code>fill()</code> to actually display it.</p>
+
+<pre><code>roundRect(x, y, width, height, radius)</code></pre>
+
+<p>Draws a rounded rectangle. You still have to call <code>stroke()</code> or <code>fill()</code> to actually display it.</p>
+
+<h2 id="howdoesitwork">How does it work?</h2>
+
+<p><strong>chainvas</strong> adds methods to the prototype of <code>CanvasRenderingContext2D</code> (the object you get when you call <code>canvas.getContext('2d')</code> is a <code>CanvasRenderingContext2D</code> object) and replaces the existing ones with a wrapper that calls the original function and returns <code>this</code> if and only if the function didn&#8217;t return <code>undefined</code>. It automatically detects which methods are present, which saves filesize and makes it much more flexible.</p>
+
+<p>Also, most of the code is written in a generic way, so you can use it to make other APIs chainable, even if completely unrelated to &lt;canvas&gt;. There is a global object <code>Chainvas</code>, with the following methods:</p>
+
+<pre><code>Chainvas.chainable(method)</code></pre>
+
+<p>Accepts a function and returns a function that does the same thing but is chainable (=returns its context instead of <code>undefined</code>)</p>
+
+<pre><code>Chainvas.chainize(prototype)</code></pre>
+
+<p>Accepts an object&#8217;s prototype, iterates through all of its own methods and makes them chainable. If overwriting a method throws an error, it will move on without failing.</p>
+
+<footer>
+	<strong>chainvas</strong> is brought to you by <a href="http://leaverou.me">Lea Verou</a>
+</footer>
+	 
+</body>	
+</html>

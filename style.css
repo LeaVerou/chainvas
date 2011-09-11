@@ -1,0 +1,204 @@
+/*
+ * Variables
+ */
+
+pre, .download {
+	background-image: -moz-linear-gradient(transparent, rgba(10,0,0,.3));
+	background-image: -ms-linear-gradient(transparent, rgba(10,0,0,.3));
+	background-image: -o-linear-gradient(transparent, rgba(10,0,0,.3));
+	background-image: -webkit-linear-gradient(transparent, rgba(10,0,0,.3));
+	background-image: linear-gradient(transparent, rgba(10,0,0,.3));
+	color: white;
+	text-shadow: .05em .05em .2em rgba(0,0,0,.5);
+}
+
+h2, h3, footer, .download {
+	font-family: 'Dancing Script', cursive;
+	line-height: 1;
+}
+
+/*
+ * Styles
+ */
+
+* {
+	margin: 0
+}
+
+@font-face {
+  font-family: 'Dancing Script';
+  font-style: normal;
+  font-weight: bold;
+  src: local('Dancing Script Bold'), local('DancingScript-Bold'), url('http://themes.googleusercontent.com/static/fonts/dancingscript/v1/KGBfwabt0ZRLA5W1ywjowQr4FYEmOdWJS9Fc8b-cYmo.woff') format('woff');
+}
+
+html {
+	background: white url(img/background.jpg);
+}
+
+body {
+	position: relative;
+	max-width: 500px;
+	padding: 40px 60px;
+	margin: 1em auto;
+	border: 20px solid transparent;
+	font-family: sans-serif;
+	line-height: 1.4;
+	
+	-moz-border-image: url(img/cloth.svg) 33.33% round;
+	-o-border-image: url(img/cloth.svg) 33.33% round;
+	-webkit-border-image: url(img/cloth.svg) 33.33% round;
+	border-image: url(img/cloth.svg) 33.33% round;
+	
+	-moz-hyphens: auto;
+	-webkit-hyphens: auto;
+	hyphens: auto;
+}
+
+h1, h2, h3, p {
+	text-shadow: 0 1px white;
+}
+
+h2, h3, p {
+	margin: 1em 0 0;
+}
+
+h2 {
+	font-size: 300%;
+	color: #b00;
+}
+
+h3 {
+	font-size: 200%;
+}
+
+h2 + h3 {
+	margin-top: .5em;
+}
+
+pre + p {
+	margin-top: .5em;
+}
+
+pre {
+	position: relative;
+	padding: 1.5em;
+	margin: 1em -1.3em;
+	background-color: #433;
+	background-color: rgba(25,0,0,.7);
+	outline: 1px dashed rgba(255, 255, 255, .5);
+	outline-offset: -8px;
+	border-radius: .5em;
+	box-shadow: 1px 2px 8px -2px black;
+}
+
+	pre:after {
+		content: '';
+		position: absolute;
+		top: 8px;
+		right: 6px;
+		bottom: 6px;
+		left: 8px;
+		border: 1px dashed black;
+		pointer-events: none;
+	}
+
+a {
+	color: #b00;
+}
+
+code {
+	font: bold 105% Consolas, monospace;
+	font-weight: bold;
+}
+
+hgroup {
+	display: block;
+	margin-bottom: 1em;
+	text-align: center;
+	font-size: 180%;
+	line-height: .8;
+}
+
+	h1 {
+		font-size: 280%;
+		letter-spacing: -.05em
+	}
+	
+		h1 b {
+			color: #f08;
+		}
+	
+	hgroup > h2 {
+		margin: 0;
+		font-size: 100%;
+	}
+	
+.promo {
+	font-size: 140%;
+	color: rgba(0,0,0,.8);
+}
+	
+.download {
+	position: absolute;
+	top: 1em;
+	right: -3em;
+	width: 4em;
+	height: 4em;
+	padding: 1em;
+	background-color: #c00;
+	
+	line-height: 1;
+	font-size: 140%;
+	text-align: center;
+	text-decoration: none;
+	
+	border-radius: 50%;
+	box-shadow: .1em .2em .4em -.2em black;
+	
+	-moz-transform: rotate(15deg);
+	-ms-transform: rotate(15deg);
+	-o-transform: rotate(15deg);
+	-webkit-transform: rotate(15deg);
+	transform: rotate(15deg);
+}
+
+	.download strong {
+		display: block;
+		margin-top: .15em;
+		font-size: 160%;
+		font-family: sans-serif;
+	}
+	
+	.download:after {
+		content: attr(title);
+		position: absolute;
+		top: 9.5em;
+		right: -2em;
+		color: black;
+		color: rgba(0,0,0,.7);
+		text-shadow: 0 1px white;
+		white-space: nowrap;
+		
+		-moz-transform: rotate(255deg);
+		-ms-transform: rotate(255deg);
+		-o-transform: rotate(255deg);
+		-webkit-transform: rotate(255deg);
+		transform: rotate(255deg);
+	}
+	
+.github {
+	position: fixed;
+	top: 0;
+	left: 0;
+}
+
+	.github img {
+		border: 0;
+	}
+
+footer {
+	margin-top: 2em;
+	text-align: center;
+	font-size: 150%;
+}
