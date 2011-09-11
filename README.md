@@ -68,9 +68,9 @@ Then you can start doing amazing things like this:
 				'href': 'http://leaverou.me',
 				'innerHTML': 'Lea Verou',
 				'title': 'Visit this awesome blog!',
-				'onclick': function(evt) { alert('gotcha!'); }
+				'onclick': function(evt){ alert('gotcha!'); }
 			})
-			.setAttribute('data-unicorns', '5')
+			.setAttribute('data-unicorns', '42')
 			.addEventListener('mouseover', function(){ alert('don’t do this')}, false)
 	);
 Feel free to try it on this page, it has `chainvas.js` loaded already (Don't forget to run the `chainablize` lines first!).
