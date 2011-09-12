@@ -45,7 +45,7 @@ body {
 	font-family: sans-serif;
 	line-height: 1.4;
 	
-	-moz-border-image: url(img/cloth.svg) 33.33% round;
+	-moz-border-image: url(img/cloth.png) 33.33% round; /* FF buggy w/ border-image SVGs */
 	-o-border-image: url(img/cloth.svg) 33.33% round;
 	-webkit-border-image: url(img/cloth.svg) 33.33% round;
 	border-image: url(img/cloth.svg) 33.33% round;
@@ -213,6 +213,12 @@ hgroup {
 .phonetic {
 	font-family:Georgia, serif;
 	opacity: .8;
+}
+
+.twitter-share-button {
+	position: fixed;
+	top: 10px;
+	right: 10px;
 }
 
 footer {

@@ -55,8 +55,8 @@ Draws a rounded rectangle. You still have to call `stroke()` or `fill()` to actu
 ### Making the DOM chainable
 You don't need jQuery just to be able to chain DOM methods. You can just do this:
 
-	Chainvas.chainablize(Node.prototype)
-	Chainvas.chainablize(Element.prototype)
+	Chainvas.chainablize(Node)
+	Chainvas.chainablize(Element)
 
 Don't worry about potential redundancy about doing it for both `Node` and `Element`. **Chainvas** checks whether the method is actually an own property of the prototype, so any given method can only belong to one of them.
 
@@ -80,7 +80,7 @@ The code above won't work in **Firefox** because it currently has [a bug](https:
 ### Making style objects chainable
 You first chainablize `CSSStyleDeclaration` objects:
 
-	Chainvas.chainablize(CSSStyleDeclaration.prototype);
+	Chainvas.chainablize(CSSStyleDeclaration);
 
 And then, you can do stuff like:
 

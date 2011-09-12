@@ -14,7 +14,9 @@ var self = window.Chainvas = {
 		}
 	},
 	
-	chainablize: function(prototype) {
+	chainablize: function(constructor) {
+		var prototype = constructor.prototype;
+		
 		// Chainablize existing methods
 		for(var method in prototype) {
 			try {
@@ -47,7 +49,7 @@ var self = window.Chainvas = {
 					}
 				}
 			}
-			else if (arguments.length == 2) {
+			else if (arguments.length === 2) {
 				this[arguments[0]] = arguments[1];
 			}
 			
@@ -64,7 +66,7 @@ if(!Ctx) {
 	return;
 }
 
-self.chainablize(Ctx.prototype);
+self.chainablize(Ctx);
 
 Ctx.prototype.circle = function(x, y, r) {
 	return this.beginPath().arc(x, y, r, 0, 2*Math.PI, false).closePath();

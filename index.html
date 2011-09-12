@@ -3,7 +3,7 @@
 <head> 
 
 <meta charset="utf-8" />
-<title>chainvas: A better canvas helper</title>	
+<title>chainvas: Chaining for everyone</title>	
 <link href="style.css" rel="stylesheet" />
 
 </head> 
@@ -87,8 +87,8 @@ prop(property, value)</code></pre>
 
 <p>You don&#8217;t need jQuery just to be able to chain DOM methods. You can just do this:</p>
 
-<pre><code>Chainvas.chainablize(Node.prototype)
-Chainvas.chainablize(Element.prototype)</code></pre>
+<pre><code>Chainvas.chainablize(Node)
+Chainvas.chainablize(Element)</code></pre>
 
 <p>Don&#8217;t worry about potential redundancy about doing it for both <code>Node</code> and <code>Element</code>. <strong>Chainvas</strong> checks whether the method is actually an own property of the prototype, so any given method can only belong to one of them.</p>
 
@@ -114,7 +114,7 @@ Chainvas.chainablize(Element.prototype)</code></pre>
 
 <p>You first chainablize <code>CSSStyleDeclaration</code> objects:</p>
 
-<pre><code>Chainvas.chainablize(CSSStyleDeclaration.prototype);</code></pre>
+<pre><code>Chainvas.chainablize(CSSStyleDeclaration);</code></pre>
 
 <p>And then, you can do stuff like:</p>
 
@@ -133,6 +133,17 @@ Chainvas.chainablize(Element.prototype)</code></pre>
 </footer>
 
 <script src="chainvas.js"></script>
+
+<a href="http://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="LeaVerou">Tweet</a>
+<script src="http://platform.twitter.com/widgets.js"></script>
+
+<script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script> 
+<script type="text/javascript"> 
+try {
+var pageTracker = _gat._getTracker("UA-597483-5");
+pageTracker._trackPageview();
+} catch(err) {}
+</script> 
 	 
 </body>	
 </html>
