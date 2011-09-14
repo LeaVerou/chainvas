@@ -10,6 +10,7 @@ var self = window.Chainvas = {
 	chainable: function(method) {
 		return function() {
 			var ret = method.apply(this, arguments)
+
 			return ret === undefined? this : ret;
 		}
 	},
@@ -56,6 +57,13 @@ var self = window.Chainvas = {
 			return this;
 		}
 	}
+};
+
+// Helper function that works like jQuery.extend
+Chainvas.extend = function(o, properties) {
+	Chainvas.methods.prop.call(o, properties);
+	
+	return this;
 };
 
 // It's all about <canvas> from now on
