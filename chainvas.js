@@ -61,9 +61,7 @@ var self = window.Chainvas = {
 
 // Helper function that works like jQuery.extend
 Chainvas.extend = function(o, properties) {
-	Chainvas.methods.prop.call(o, properties);
-	
-	return this;
+	return Chainvas.methods.prop.call(o, properties);
 };
 
 // It's all about <canvas> from now on
