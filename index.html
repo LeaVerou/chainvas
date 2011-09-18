@@ -74,7 +74,7 @@ obj.baz();</code></pre>
 
 <p>This function is similar to <code>Chainvas.chainablizeOne()</code>, but it&#8217;s intended for more methods instead of just one or two. If the second argument is not used, it will loop through all the prototype&#8217;s methods and make them all chainable. If you want to restrict that behavior to only a subset of methods, you can pass an array with method names (strings) as its second parameter.</p>
 
-<p>Please note that the first parameter is <strong>the constructor, not the prototype</strong>. In other words, if you wanted to chainablize <code>Array</code>, you would use <code>Chainvas.chainablize(Array)</code> and not <code>Chainvas.chainablize(Array.prototype)</code>. However, since <code>Array</code> is naturally quite chainable, it makes sense to only chainablize one or two methods, for example <code>forEach</code>. In this case, you would use `Chainvas.chainablizeOne(Array.prototype, &#8216;forEach&#8217;)</p>
+<p>Please note that the first parameter is <strong>the constructor, not the prototype</strong>. In other words, if you wanted to chainablize <code>Array</code>, you would use <code>Chainvas.chainablize(Array)</code> and not <code>Chainvas.chainablize(Array.prototype)</code>. However, since <code>Array</code> is naturally quite chainable, it makes sense to only chainablize one or two methods, for example <code>forEach</code>. In this case, you would use <code>Chainvas.chainablizeOne(Array.prototype, &#8216;forEach&#8217;)</code></p>
 
 <h4 id="chainvas.helpers"><code>Chainvas.helpers(constructor [, extras])</code></h4>
 
@@ -101,7 +101,7 @@ obj.prop(property, value)</code></pre>
 
 <p>You might be wondering why there&#8217;s no <code>prop(property)</code> for getting values. However, that would be redundant, since in our case we can just do <code>object.foo</code> instead of <code>object.prop('foo')</code>.</p>
 
-<p>You can also use this method to set multiple properties on every object, by using <code>Chainvas.methods.prop.call(obj, properties)</code> or <code>Chainvas(obj, properties)</code> which is a shortcut to that.</p>
+<p>You can also use this method to set multiple properties on every object, by using <code>Chainvas.methods.prop.call(obj, properties)</code> or <code>Chainvas.extend(obj, properties)</code> which is a shortcut to that.</p>
 
 <p>And that&#8217;s all for now. You can suggest methods to add, but I&#8217;m very conservative about adding new methods to <strong>every</strong> chainablized prototype, so it has to be super-useful and with low chances or collisions, like <code>prop</code>. If it&#8217;s only useful for a certain case, add it to that module instead, through the <code>extras</code> parameter in <code>Chainvas.helpers</code>.</p>
 

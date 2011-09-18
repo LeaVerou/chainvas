@@ -40,7 +40,7 @@ This function accepts a prototype object and a method name (string) and makes th
 #### `Chainvas.chainablize(constructor [, restricted])`[Chainvas.chainablize]
 This function is similar to `Chainvas.chainablizeOne()`, but it's intended for more methods instead of just one or two. If the second argument is not used, it will loop through all the prototype's methods and make them all chainable. If you want to restrict that behavior to only a subset of methods, you can pass an array with method names (strings) as its second parameter.
 
-Please note that the first parameter is **the constructor, not the prototype**. In other words, if you wanted to chainablize `Array`, you would use `Chainvas.chainablize(Array)` and not `Chainvas.chainablize(Array.prototype)`. However, since `Array` is naturally quite chainable, it makes sense to only chainablize one or two methods, for example `forEach`. In this case, you would use `Chainvas.chainablizeOne(Array.prototype, 'forEach')
+Please note that the first parameter is **the constructor, not the prototype**. In other words, if you wanted to chainablize `Array`, you would use `Chainvas.chainablize(Array)` and not `Chainvas.chainablize(Array.prototype)`. However, since `Array` is naturally quite chainable, it makes sense to only chainablize one or two methods, for example `forEach`. In this case, you would use `Chainvas.chainablizeOne(Array.prototype, 'forEach')`
 
 #### `Chainvas.helpers(constructor [, extras])`[Chainvas.helpers]
 This function adds both the [Chainvas core methods][chainvas-core-methods] along with any extra helpers you might want to add. Note that your helpers will have to return `this` themselves, as they won't be wrapped. It's just a shortcut for `Foo.prototype.myExtra = function() {...}`. For an example of using `Chainvas.helpers` with extras, check the source of the Canvas module.
@@ -63,7 +63,7 @@ Helpful for setting properties (like `lineWidth`, `strokeStyle` etc in canvas co
 
 You might be wondering why there's no `prop(property)` for getting values. However, that would be redundant, since in our case we can just do `object.foo` instead of `object.prop('foo')`.
 
-You can also use this method to set multiple properties on every object, by using `Chainvas.methods.prop.call(obj, properties)` or `Chainvas(obj, properties)` which is a shortcut to that.
+You can also use this method to set multiple properties on every object, by using `Chainvas.methods.prop.call(obj, properties)` or `Chainvas.extend(obj, properties)` which is a shortcut to that.
 
 And that's all for now. You can suggest methods to add, but I'm very conservative about adding new methods to **every** chainablized prototype, so it has to be super-useful and with low chances or collisions, like `prop`. If it's only useful for a certain case, add it to that module instead, through the `extras` parameter in `Chainvas.helpers`.
 
