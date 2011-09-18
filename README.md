@@ -143,7 +143,7 @@ Of course, the individual Chainvas modules have different browser support than t
 ### Canvas module
 Every browser that supports canvas.
 
-Just because an older version isn't listed above, doesn't mean Chainvas doesn't work in it. It just means I haven't tested in it. You can run [the unit tests](unit-tests.html) in your browsers and operating systems and let me know.
+Just because an older version isn't listed above, doesn't mean Chainvas doesn't work in it. It just means I haven't tested in it. You can run [the unit tests](http://leaverou.me/chainvas/unit-tests.html) in your browsers and operating systems and let me know.
 
 ## Making your own modules[making-your-own-modules]
 Making new modules is super easy. Modules are essentially pieces of code added in `chainvas.js` through comments like this:
@@ -178,6 +178,6 @@ Chainvas originally started as a library to make the Canvas API chainable. I rea
 ### I love Chainvas! How can I help?
 
 * You can help make it better, by [writing new modules][making-your-own-modules]
-* You can run the [unit tests](unit-tests.html) in your environment and let me know about the results
+* You can run the [unit tests](http://leaverou.me/chainvas/unit-tests.html) in your environment and let me know about the results
 * You can show your Chainvas love by linking to this page and/or using the following graphic (SVG):
-![Made with care and chainvas](/img/madewith.svg)
+![Made with care and chainvas](http://leaverou.me/chainvas/img/madewith.svg)
