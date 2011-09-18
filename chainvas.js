@@ -144,7 +144,7 @@ if (window.HTMLElement
 	&& 'addEventListener' in window.HTMLElement.prototype 
 	&& window.Components 
 	&& window.Components.interfaces) {
-	for(p in Components.interfaces) {
+	for(var p in Components.interfaces) {
 		if(p.match(/^nsIDOMHTML\w*Element$/)) {
 			var inyourface = p.replace(/^nsIDOM/, '');
 			
