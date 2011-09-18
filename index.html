@@ -1,9 +1,10 @@
-<!doctype html> 
+<!DOCTYPE html> 
 <html lang="en"> 
 <head> 
 
 <meta charset="utf-8" />
 <title>chainvas: Chaining for everyone</title>	
+<link href="img/logo.svg" rel="shortcut icon" />
 <link href="style.css" rel="stylesheet" />
 
 </head> 
@@ -15,84 +16,101 @@
 </hgroup>
 
 <p class="promo">
-	<strong>chain&bull;vas</strong> <span class="phonetic">|chānvəs|</span> <i>n.</i> A tiny library that adds chaining and various helper methods to the canvas API. Additionally, it can make every API chainable.
+	<strong>chain•vas</strong> <span class="phonetic">|chānvəs|</span> <i>n.</i> 
+	A tiny, modular library that can add chaining to any API that isn’t naturally chainable, like the Canvas API, the DOM and more.
 </p>
 	
-<a href="https://raw.github.com/LeaVerou/chainvas/master/chainvas.min.js" class="download" title="Click to download ->">Only <strong>1KB</strong> minified</a>
+<a href="https://raw.github.com/LeaVerou/chainvas/master/chainvas.min.js" class="download" title="Click to download ->">Only <strong>1-2KB</strong> minified</a>
 
 <a href="https://github.com/LeaVerou/chainvas" class="github">
 	<img src="https://a248.e.akamai.net/assets.github.com/img/5d21241b64dc708fcbb701f68f72f41e9f1fadd6/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f7265645f6161303030302e706e67" alt="Fork me on GitHub">
 </a>
 
+<div id="toc">
+	<h2>Contents</h2>
+	<ol></ol>
+</div>
+
+<!-- Start pasting the markdown here -->
+
 <h2 id="howdoesitwork">How does it work?</h2>
 
-<p><strong>chainvas</strong> adds methods to the prototype of <code>CanvasRenderingContext2D</code> (the object you get when you call <code>canvas.getContext('2d')</code> is a <code>CanvasRenderingContext2D</code> object) and replaces the existing ones with a wrapper that calls the original function and returns <code>this</code> if and only if the function didn&#8217;t return <code>undefined</code>. It automatically detects which methods are present, which saves filesize and makes it much more flexible.</p>
+<p><strong>chainvas</strong> goes through all the methods in a prototype and wraps a function around them that returns the returned value or, if that is <code>undefined</code>, the function&#8217;s context (<code>this</code>). Since the function context is our original object, we can keep calling methods without having to write the variable name over and over again, like this:</p>
 
-<p>Also, most of the code is written in a generic way, so you can use it to make other APIs chainable, even if completely unrelated to &lt;canvas&gt;. There is a global <code>Chainvas</code> object, with the following methods:</p>
+<pre><code>obj.foo().bar().baz();</code></pre>
 
-<pre><code>Chainvas.chainable(method)</code></pre>
+<p>instead of this:</p>
 
-<p>Accepts a function and returns a function that does the same thing but is chainable (=returns its context instead of <code>undefined</code>)</p>
+<pre><code>obj.foo();
+obj.bar();
+obj.baz();</code></pre>
 
-<pre><code>Chainvas.chainablize(prototype)</code></pre>
+<p>This practice is usually called <strong>chaining</strong> and was popularized by <a href="http://jquery.com/">jQuery</a> back in 2006. If you find the first code example harder to read than the second, keep in mind that you can format it like this:</p>
 
-<p>Accepts an object&#8217;s prototype, iterates through all of its own methods and makes them chainable. It also adds <a href="#extrahelpermethods">a few extra helpers</a>, if no methods with the same name are already defined. If overwriting a method throws an error, it will move on without failing.</p>
+<pre><code>obj
+  .foo()
+  .bar()
+  .baz();</code></pre>
+
+<p>which not only saves you the extra bytes and typing, but is also much easier to read than both of the previous examples.</p>
+
+<p><strong>chainvas</strong> also optionally adds a few helper methods (currently only one at the Core level, <code>.prop()</code>) to make chaining easier. For details about all this, read the Documentation below.</p>
+
+<p><strong>chainvas</strong>&#8217; Core does not modify any existing objects. There are some official modules that are optionally supplied with it which do so, for a number of different APIs. However, if you feel uneasy about modifying existing prototypes, you can just download the extra lightweight Core and use it in a custom way.</p>
 
 <h2 id="documentation">Documentation</h2>
 
-<h3 id="chaining">Chaining</h3>
+<h3 id="chainvascore">Chainvas Core</h3>
 
-<p><strong>chainvas</strong> alters the native methods on the canvas’ context, so that they are chainable, allowing you to do things like this:</p>
+<h4 id="chainvas.chainable"><code>Chainvas.chainable(method)</code></h4>
 
-<pre><code>ctx.beginPath()
-    .prop({
-        lineWidth: 2,
-        strokeStyle: '#333'
-    }).moveTo(0,0)
-    .bezierCurveTo(50,50, 80,80, 100,100)
-    .stroke().closePath();</code></pre>
+<p>This function accepts a function as a parameter and returns a function that&#8217;s the same, with the only difference that it returns <code>this</code> in cases when it was going to return <code>undefined</code>, essentially making it chainable.</p>
 
-<h3 id="extrahelpermethods">Extra helper methods</h3>
+<h4 id="chainvas.chainablizeone"><code>Chainvas.chainablizeOne(prototype, method)</code></h4>
 
-<h4 id="generichelpers">Generic helpers</h4>
+<p>This function accepts a prototype object and a method name (string) and makes that method chainable, if and only if it&#8217;s already present on the prototype (in other words, you can&#8217;t use it to add extra methods to it). This function is useful for more conservative developers that don&#8217;t want to alter the APIs too much, but only use that convenience for a couple methods they use most often.</p>
 
-<p>The following methods will be added to every &#8220;chainabl-ized&#8221; prototype.</p>
+<h4 id="chainvas.chainablize"><code>Chainvas.chainablize(constructor [, restricted])</code></h4>
 
-<pre><code>prop(values)
-prop(property, value)</code></pre>
+<p>This function is similar to <code>Chainvas.chainablizeOne()</code>, but it&#8217;s intended for more methods instead of just one or two. If the second argument is not used, it will loop through all the prototype&#8217;s methods and make them all chainable. If you want to restrict that behavior to only a subset of methods, you can pass an array with method names (strings) as its second parameter.</p>
+
+<p>Please note that the first parameter is <strong>the constructor, not the prototype</strong>. In other words, if you wanted to chainablize <code>Array</code>, you would use <code>Chainvas.chainablize(Array)</code> and not <code>Chainvas.chainablize(Array.prototype)</code>. However, since <code>Array</code> is naturally quite chainable, it makes sense to only chainablize one or two methods, for example <code>forEach</code>. In this case, you would use `Chainvas.chainablizeOne(Array.prototype, &#8216;forEach&#8217;)</p>
+
+<h4 id="chainvas.helpers"><code>Chainvas.helpers(constructor [, extras])</code></h4>
+
+<p>This function adds both the <a href="#chainvas-core-methods" title="Chainvas core methods">Chainvas core methods</a> along with any extra helpers you might want to add. Note that your helpers will have to return <code>this</code> themselves, as they won&#8217;t be wrapped. It&#8217;s just a shortcut for <code>Foo.prototype.myExtra = function() {...}</code>. For an example of using <code>Chainvas.helpers</code> with extras, check the source of the Canvas module.</p>
+
+<h4 id="chainvas.global"><code>Chainvas.global(constructorNames [, extras [, restricted]])</code></h4>
+
+<p>This is a convenience function for chainablizing and adding helpers to one or more global constructors.  You pass in the <strong>names</strong> of the constructors as either a string or an array of strings. For example <code>'Node'</code>, <code>'Element'</code> or <code>['Node', 'Element']</code> for both.</p>
+
+<p>The <code>extras</code> parameter works the same as it does for <a href="#chainvas.helpers" title="Chainvas.helpers(constructor [, extras])">Chainvas.helpers</a> and the <code>restricted</code> parameter is the same as in <a href="#chainvas.chainablize" title="Chainvas.chainablize(constructor [, restricted])">Chainvas.chainablize</a>.</p>
+
+<p>Of course, all the Chainvas methods are chainable themselves as well, so you can do stuff like:</p>
+
+<pre><code>Chainvas.chainablize(...).helpers(...);</code></pre>
+
+<h3 id="chainvas-core-methods">Chainvas core methods</h3>
+
+<p>The following methods will be added to every prototype when <code>Chainvas.helpers</code> is called on its constructor:</p>
+
+<pre><code>obj.prop(values)
+obj.prop(property, value)</code></pre>
 
 <p>Helpful for setting properties (like <code>lineWidth</code>, <code>strokeStyle</code> etc in canvas contexts) in a more readable way and without  breaking the code chain.</p>
 
 <p>You might be wondering why there&#8217;s no <code>prop(property)</code> for getting values. However, that would be redundant, since in our case we can just do <code>object.foo</code> instead of <code>object.prop('foo')</code>.</p>
 
-<h4 id="canvashelpers">Canvas helpers</h4>
+<p>You can also use this method to set multiple properties on every object, by using <code>Chainvas.methods.prop.call(obj, properties)</code> or <code>Chainvas(obj, properties)</code> which is a shortcut to that.</p>
 
-<p>The following methods are only useful for canvas, so they’re only added to <code>CanvasRenderingContext2D</code>.</p>
+<p>And that&#8217;s all for now. You can suggest methods to add, but I&#8217;m very conservative about adding new methods to <strong>every</strong> chainablized prototype, so it has to be super-useful and with low chances or collisions, like <code>prop</code>. If it&#8217;s only useful for a certain case, add it to that module instead, through the <code>extras</code> parameter in <code>Chainvas.helpers</code>.</p>
 
-<pre><code>circle(x, y, radius)</code></pre>
+<h3 id="dom-module">DOM module</h3>
 
-<p>Draws a circle. You still have to call <code>stroke()</code> or <code>fill()</code> to actually display it.</p>
+<p>The <strong>Chainvas DOM module</strong> makes the following chainable:</p>
 
-<pre><code>roundRect(x, y, width, height, radius)</code></pre>
-
-<p>Draws a rounded rectangle. You still have to call <code>stroke()</code> or <code>fill()</code> to actually display it.</p>
-
-<h2 id="browsersupport">Browser support</h2>
-
-<p><strong>Chainvas</strong> is essentially an alpha (or an early beta, dunno, everyone seems to define those differently). I haven&#8217;t done much browser testing yet. I know for a fact it works in modern versions of <strong>Firefox</strong>, <strong>Chrome</strong> and <strong>Opera</strong> on <strong>OSX</strong>. But beyond that&#8230; I have no idea. I don&#8217;t see a reason why it wouldn&#8217;t work in others, but there is always the possibility of bugs preventing it to do so. And this is where you come in: You can test it in your browsers and operating systems and let me know. I&#8217;m planning to publish some unit tests soon, so that it&#8217;s even easier to help with testing.</p>
-
-<h2 id="examples">Examples</h2>
-
-<h3 id="makingthedomchainable">Making the DOM chainable</h3>
-
-<p>You don&#8217;t need jQuery just to be able to chain DOM methods. You can just do this:</p>
-
-<pre><code>Chainvas.chainablize(Node)
-Chainvas.chainablize(Element)</code></pre>
-
-<p>Don&#8217;t worry about potential redundancy about doing it for both <code>Node</code> and <code>Element</code>. <strong>Chainvas</strong> checks whether the method is actually an own property of the prototype, so any given method can only belong to one of them.</p>
-
-<p>Then you can start doing amazing things like this:</p>
+<ul>
+<li><p>DOM methods on elements, allowing you to do amazing things like:</p>
 
 <pre><code>document.body.appendChild(
     document.createElement('a')
@@ -104,28 +122,142 @@ Chainvas.chainablize(Element)</code></pre>
         })
         .setAttribute('data-unicorns', '42')
         .addEventListener('mouseover', function(){ alert('don’t do this')}, false)
-);</code></pre>
-
-<p>Feel free to try it on this page, it has <code>chainvas.js</code> loaded already (Don&#8217;t forget to run the <code>chainablize</code> lines first!).</p>
-
-<p>The code above won&#8217;t work in <strong>Firefox</strong> because it currently has <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=686210">a bug</a> and it specifies native DOM methods like <code>addEventListener</code> or <code>setAttribute</code> in <strong>every</strong> prototype below <code>Node</code>. So, if you want to chain these methods, you have to do it for the most specific interface available. For example, if it&#8217;s a link, you have to chainablize <code>HTMLAnchorElement</code> too, which makes it very impractical. :(</p>
-
-<h3 id="makingstyleobjectschainable">Making style objects chainable</h3>
-
-<p>You first chainablize <code>CSSStyleDeclaration</code> objects:</p>
-
-<pre><code>Chainvas.chainablize(CSSStyleDeclaration);</code></pre>
-
-<p>And then, you can do stuff like:</p>
+);</code></pre></li>
+<li><p>Style objects, allowing you to do stuff like:</p>
 
 <pre><code>var css = document.body.style.prop({
     color: '#245',
     fontFamily: 'Georgia, serif',
     textDecoration: 'underline'
 }).removeProperty('text-decoration')
-.cssText;</code></pre>
+.cssText;</code></pre></li>
+<li><p><code>classList</code> methods, allowing you to do things like:</p>
 
-<p>You can try it in the console right now, and check the results out ;)</p>
+<pre><code>element.classList
+    .add('foo')
+    .add('bar')
+    .toggle('baz');</code></pre>
+
+<p>when <code>classList</code> is supported.</p></li>
+</ul>
+
+<p>It does not add any extra helpers (besides the <a href="#chainvas-core-methods" title="Chainvas core methods">Chainvas code methods</a> of course).</p>
+
+<h3 id="canvas-module">Canvas module</h3>
+
+<p>The <strong>Chainvas Canvas module</strong> alters the native methods on the canvas context, so that they are chainable, allowing you to do things like this:</p>
+
+<pre><code>ctx.beginPath()
+    .prop({
+        lineWidth: 2,
+        strokeStyle: '#333'
+    }).moveTo(0,0)
+    .bezierCurveTo(50,50, 80,80, 100,100)
+    .stroke().closePath();</code></pre>
+
+<p>It also adds the following helper methods:</p>
+
+<pre><code>circle(x, y, radius)</code></pre>
+
+<p>Draws a circle. You still have to call <code>stroke()</code> or <code>fill()</code> to actually display it.</p>
+
+<pre><code>roundRect(x, y, width, height, radius)</code></pre>
+
+<p>Draws a rounded rectangle. You still have to call <code>stroke()</code> or <code>fill()</code> to actually display it.</p>
+
+<h2 id="browsersupport">Browser support</h2>
+
+<p><strong>Chainvas core</strong> has been tested and found to work in:</p>
+
+<ul>
+<li>Chrome</li>
+<li>Firefox 3.6+</li>
+<li>Opera 10+</li>
+<li>Safari 4+</li>
+<li>IE6+ (yes, IE6!) </li>
+</ul>
+
+<p>Of course, the individual Chainvas modules have different browser support than the core. For example, the <a href="#dom-module" title="DOM module">Chainvas DOM module</a> won&#8217;t work in IE7 or below, since it doesn&#8217;t expose the DOM interfaces and the <a href="#canvas-module" title="Canvas module">Chainvas Canvas module</a> won&#8217;t work in any browser that doesn&#8217;t support canvas. Here&#8217;s the browser support information for the built-in modules:</p>
+
+<h3 id="dommodule">DOM module</h3>
+
+<ul>
+<li>Chrome</li>
+<li>Firefox 3.6+*</li>
+<li>Opera 10+</li>
+<li>Safari 4+</li>
+<li>IE8+</li>
+</ul>
+
+<p>* Except for <code>addEventListener</code> prior to Firefox 4, due to <a href="https://bugzilla.mozilla.org/show_bug.cgi?id=456151">this bug</a></p>
+
+<h3 id="canvasmodule">Canvas module</h3>
+
+<p>Every browser that supports canvas.</p>
+
+<p>Just because an older version isn&#8217;t listed above, doesn&#8217;t mean Chainvas doesn&#8217;t work in it. It just means I haven&#8217;t tested in it. You can run <a href="unit-tests.html">the unit tests</a> in your browsers and operating systems and let me know.</p>
+
+<h2 id="making-your-own-modules">Making your own modules</h2>
+
+<p>Making new modules is super easy. Modules are essentially pieces of code added in <code>chainvas.js</code> through comments like this:</p>
+
+<pre><code>/**
+ * Chainvas module: Your module id
+ */</code></pre>
+
+<p>Then, the build script splits chainvas.js where these comments are. Module ids can contain letters, numbers, spaces, hyphens or underscores (_). Please note that these comments have to also be present in the minified <code>chainvas.min.js</code> file, even though they&#8217;re not included in the built minified file.</p>
+
+<p>So, you can fork the <a href="https://github.com/LeaVerou/chainvas">Chainvas repo on github</a>, add your module and send a pull request.</p>
+
+<h2 id="faq">FAQ</h2>
+
+<h3 id="isntmodifyinghostobjectsbad">Isn&#8217;t modifying host objects bad?</h3>
+
+<p>In the general case, yes it is. However, most arguments against it, don&#8217;t really apply to what Chainvas does. Besides, <strong>Chainvas core doesn&#8217;t modify any existing objects</strong>, so it&#8217;s up to you which extra modules to use, if any. Most counter-arguments below apply to the Chainvas modules that modify host objects (like the <a href="#dom-module" title="DOM module">DOM module</a>), not the Chainvas core itself.</p>
+
+<p>Kangax has written <a href="http://perfectionkills.com/whats-wrong-with-extending-the-dom/">an extensive article against the practice of modifying host objects</a> which is commonly mentioned in relevant discussions. This article was written years ago and while it was great advice at that time, some of its points don&#8217;t really apply nowadays. And the ones that do, don&#8217;t apply to Chainvas. Lets tackle his arguments one by one:</p>
+
+<ul>
+<li><a href="http://perfectionkills.com/whats-wrong-with-extending-the-dom/#lack_of_specification">Lack of specification</a>: Yes, there is no official requirement that browsers expose these interfaces. However, the fact is that every browser currently in use does so, except old IEs (&lt; 8). <code>innerHTML</code> and a bunch of other commonly used stuff wasn&#8217;t required to be there by any spec either up to a while ago, but everyone still used it.</li>
+<li><a href="http://perfectionkills.com/whats-wrong-with-extending-the-dom/#host_objects_have_no_rules">Host objects have no rules</a>: This is similar to the first one. Yes, they are not required to do anything by the specifications, but fact is, they behave quite consistently in practice. Most of the issues that kangax mentions are found in old IEs, which now have a tiny market share and Chainvas doesn&#8217;t even support, and they&#8217;re not about the prototypes, but instances themselves. Chainvas doesn&#8217;t attempt to do manual extension on any instances, only on prototypes.</li>
+<li><a href="http://perfectionkills.com/whats-wrong-with-extending-the-dom/#chance_of_collisions">Chance of collisions</a>: This is IMHO the most valid argument, and the reason you should be <strong>very conservative</strong> when using <a href="#chainvas.helpers" title="Chainvas.helpers(constructor [, extras])"><code>Chainvas.helpers</code></a>. However, in chainablizing existing methods, this point is moot, since they already exist there.</li>
+<li><a href="http://perfectionkills.com/whats-wrong-with-extending-the-dom/#performance_overhead">Performance overhead</a>: Again, a very good point in general, but Chainvas does not manually extend any <em>instances</em>. There <em>is</em> a very slight performance overhead introduced by wrapping the native methods, which you can reduce even further by using the <code>restricted</code> parameter in <a href="#chainvas.chainablize" title="Chainvas.chainablize(constructor [, restricted])">Chainvas.chainablize</a> to limit which methods become chainable. However, this has the disadvantage of bloating your code with extra bytes and making it less future-proof, which is why it&#8217;s not used by default in the official Chainvas modules.</li>
+<li><a href="http://perfectionkills.com/whats-wrong-with-extending-the-dom/#ie_dom_is_a_mess">IE DOM is a mess</a>: Again, this is only about manual extension, which Chainvas does not do.</li>
+<li><a href="http://perfectionkills.com/whats-wrong-with-extending-the-dom/#bonus_browser_bugs">Browser bugs</a>: The mentioned bugs are only relevant for IE8 now, browsers like Safari 3 have faded into obscurity. And those IE8 bugs do not affect what the Chainvas DOM module does at all.</li>
+</ul>
+
+<p>Another argument that people commonly use is that <em>&#8220;modifying host objects makes their behavior unpredictable and breaks existing scripts&#8221;</em>. This is very true for some cases: You should never, for example, modify a native method to do what you think it should, instead of what it actually does. However, the only thing that Chainvas changes in native methods is that they return <code>this</code> instead of <code>undefined</code>. Can you name any real use case where a script breaks if a native method doesn&#8217;t return <code>undefined</code>? Neither can I. Because we usually don&#8217;t even store the return value of these methods, let alone do something useful with it.</p>
+
+<h3 id="whatsupwithallthecanvasreferences">What&#8217;s up with all the canvas references?</h3>
+
+<p>Chainvas originally started as a library to make the Canvas API chainable. I realized afterwards that its potential is much more than that, so I made it more generic and split all the Canvas-related functionality to just an extra module.</p>
+
+<h3 id="ilovechainvashowcanihelp">I love Chainvas! How can I help?</h3>
+
+<ul>
+<li>You can help make it better, by <a href="#making-your-own-modules" title="Making your own modules">writing new modules</a></li>
+<li>You can run the <a href="unit-tests.html">unit tests</a> in your environment and let me know about the results</li>
+<li>You can show your Chainvas love by linking to this page and/or using the following graphic (SVG):
+	<img src="img/madewith.svg" style="display:block" />
+</li>
+</ul>
+
+<h2 id="download">Download</h2>
+<form>
+<p>
+	First things first, what compression level?
+	<label><input type="radio" name="compression" value="0" /> Development version</label>
+	<label><input type="radio" name="compression" value="1" /> Minified version</label>
+</p>
+<p>
+Please select which components to download:
+<progress></progress>
+</p>
+<p>
+	Total filesize: <strong id="filesize">Please, select a compression level first</strong>
+</p>
+<a href="#" target="_blank"><strong>Get chainvas!</strong></a>
+</form>
 
 <footer>
 	<a href="http://leaverou.me/2011/09/chainvas-make-apis-chainable-enhance-the-canvas-api/">About</a>
@@ -133,12 +265,14 @@ Chainvas.chainablize(Element)</code></pre>
 </footer>
 
 <script src="chainvas.js"></script>
+<script src="index.js"></script>
+<script src="http://www.bytesizematters.com/bytesize.js" async></script>
 
 <a href="http://twitter.com/share" class="twitter-share-button" data-count="vertical" data-via="LeaVerou">Tweet</a>
 <script src="http://platform.twitter.com/widgets.js"></script>
 
-<script type="text/javascript" src="http://www.google-analytics.com/ga.js"></script> 
-<script type="text/javascript"> 
+<script src="http://www.google-analytics.com/ga.js"></script> 
+<script> 
 try {
 var pageTracker = _gat._getTracker("UA-597483-5");
 pageTracker._trackPageview();

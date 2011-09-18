@@ -1,8 +1,13 @@
+@import url(http://fonts.googleapis.com/css?family=Dancing+Script:700);
+
 /*
  * Variables
  */
 
-pre, .download {
+pre,
+h4,
+form > a,
+.download {
 	color: white;
 	text-shadow: .08em .08em .2em rgba(0,0,0,.6);
 	background-image: -moz-linear-gradient(transparent, rgba(10,0,0,.3));
@@ -12,9 +17,17 @@ pre, .download {
 	background-image: linear-gradient(transparent, rgba(10,0,0,.3));
 }
 
-h2, h3, footer, .download {
+h2, h3, footer, .download, form > a {
 	font-family: 'Dancing Script', cursive;
 	line-height: 1;
+}
+
+body, #toc {
+	border: 20px solid transparent;
+	-moz-border-image: url(img/cloth.png) 33.33% round; /* FF buggy w/ border-image SVGs */
+	-o-border-image: url(img/cloth.svg) 33.33% round;
+	-webkit-border-image: url(img/cloth.svg) 33.33% round;
+	border-image: url(img/cloth.svg) 33.33% round;
 }
 
 /*
@@ -23,13 +36,6 @@ h2, h3, footer, .download {
 
 * {
 	margin: 0
-}
-
-@font-face {
-  font-family: 'Dancing Script';
-  font-style: normal;
-  font-weight: bold;
-  src: local('Dancing Script Bold'), local('DancingScript-Bold'), url('http://themes.googleusercontent.com/static/fonts/dancingscript/v1/KGBfwabt0ZRLA5W1ywjowQr4FYEmOdWJS9Fc8b-cYmo.woff') format('woff');
 }
 
 html {
@@ -41,25 +47,19 @@ body {
 	max-width: 510px;
 	padding: 40px 60px;
 	margin: 1em auto;
-	border: 20px solid transparent;
 	font-family: sans-serif;
 	line-height: 1.4;
-	
-	-moz-border-image: url(img/cloth.png) 33.33% round; /* FF buggy w/ border-image SVGs */
-	-o-border-image: url(img/cloth.svg) 33.33% round;
-	-webkit-border-image: url(img/cloth.svg) 33.33% round;
-	border-image: url(img/cloth.svg) 33.33% round;
 	
 	-moz-hyphens: auto;
 	-webkit-hyphens: auto;
 	hyphens: auto;
 }
 
-h1, h2, h3, h4, p {
+h1, h2, h3, p, li {
 	text-shadow: 0 1px white;
 }
 
-h2, h3, h4, p {
+h2, h3, p {
 	margin: 1em 0 0;
 }
 
@@ -76,16 +76,13 @@ h2 + h3 {
 	margin-top: .5em;
 }
 
-h4 {
-	font-size: 120%;
-	color: rgba(0,0,0,.7);
-}
-
 pre + p, h4 + p {
 	margin-top: .5em;
 }
 
-pre {
+pre,
+h4,
+form > a {
 	position: relative;
 	padding: .6em;
 	margin: 1em -1.3em;
@@ -96,7 +93,9 @@ pre {
 	overflow: auto;
 }
 
-	pre > code {
+	pre > code,
+	h4 > code,
+	form > a > strong {
 		display: block;
 		
 		position: relative;
@@ -105,7 +104,9 @@ pre {
 		border: 1px dashed rgba(255, 255, 255, .5);
 	}
 	
-	pre > code:after {
+	pre > code:after,
+	h4 > code:after,
+	form > a > strong:after {
 		content: '';
 		position: absolute;
 		top: 0;
@@ -125,9 +126,13 @@ code {
 	font-weight: bold;
 }
 
+ul {
+	padding: 0;
+	list-style: square;
+}
+
 hgroup {
 	display: block;
-	margin-bottom: 1em;
 	text-align: center;
 	font-size: 180%;
 	line-height: .8;
@@ -137,9 +142,15 @@ hgroup {
 		font-size: 280%;
 		letter-spacing: -.05em
 	}
-	
-		h1 b {
-			color: #f08;
+		
+		h1:before {
+			content: '';
+			background: url(img/logo.svg) no-repeat center;
+			display: block;
+			margin: 0 auto .2em;
+			width: 66px;
+			height: 66px;
+			
 		}
 	
 	hgroup > h2 {
@@ -156,9 +167,9 @@ hgroup {
 	position: absolute;
 	top: 1em;
 	right: -3em;
-	width: 4em;
-	height: 4em;
-	padding: 1em;
+	width: 6em;
+	height: 6em;
+	padding: 1em 0;
 	background-color: #c00;
 	
 	line-height: 1;
@@ -168,6 +179,9 @@ hgroup {
 	
 	border-radius: 50%;
 	box-shadow: .1em .2em .4em -.2em black;
+	
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
 	
 	-moz-transform: rotate(15deg);
 	-ms-transform: rotate(15deg);
@@ -179,8 +193,9 @@ hgroup {
 	.download strong {
 		display: block;
 		margin-top: .15em;
-		font-size: 160%;
+		font-size: 150%;
 		font-family: sans-serif;
+		white-space: nowrap;
 	}
 	
 	.download:after {
@@ -226,3 +241,90 @@ footer {
 	text-align: center;
 	font-size: 150%;
 }
+
+#toc {
+	position: fixed;
+	top: 10em;
+	left: 50%;
+	margin-left: -580px;
+	z-index: -1;
+	width: 11em;
+	padding: .5em 1em;
+	font-size: 80%;
+	text-align: center;
+	
+	-moz-transform: rotate(-5deg);
+	-ms-transform: rotate(-5deg);
+	-o-transform: rotate(-5deg);
+	-webkit-transform: rotate(-5deg);
+	transform: rotate(-5deg);
+}
+
+	#toc > h2 {
+		margin: 0 0 .2em;
+		font-size: 320%;
+		text-shadow: 0 1px rgba(255,255,255,.4);
+	}
+	
+	#toc > ol {
+		padding: 0;
+	}
+	
+		#toc > ol > li {
+			list-style: none;
+		}
+		
+			#toc > ol > li > a {
+				display: block;
+				text-decoration: none;
+				color: black;
+				font-size: 120%;
+				font-weight: bold;
+			}
+			
+			#toc > ol > li > a:hover {
+				color: #a00;
+			}
+
+/* form {} */
+	
+	form label {
+		display: block;
+		padding: .2em;
+		font-size: 140%;
+	}
+	
+	form input[type="checkbox"] {
+		margin-right: .7em;
+	}
+	
+	form p:first-child + p {
+		display: none;
+	}
+	
+	form.open p:first-child + p {
+		display: block;
+	}
+	
+	form progress {
+		display: block;
+	}
+	
+	form > a {
+		display: none;
+		width: 300px;
+		padding: .2em;
+		margin: 1em auto;
+		text-decoration: none;
+		font-size: 250%;
+		text-align: center;
+		border-radius: .2em;
+	}
+	
+	form.open > a {
+		display: block;
+	}
+	
+		form > a > strong {
+			padding: .2em 0 .3em;
+		}

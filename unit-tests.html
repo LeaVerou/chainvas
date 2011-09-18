@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+<title>Chainvas (&amp; modules) unit tests</title>
+<link href="img/logo.svg" rel="shortcut icon" />
+<link href="style.css" rel="stylesheet" />
+<style>
+.tests, .legend {
+	margin: 0;
+	padding: 0;
+}
+
+.legend {
+	margin: 4em 0 -1em;
+	text-align: center;
+}
+
+.tests li,
+.legend span {
+	padding: .4em .6em;
+	margin: .3em 0;
+	list-style: none;
+	color: white;
+	font-weight: bold;
+	text-shadow: .1em .1em .2em rgba(0,0,0,.3);
+	border-radius: .5em;
+}
+
+.pass {
+	background: #490;
+}
+
+.fail {
+	background: #b00;
+}
+
+.error {
+	background: #333;
+}
+</style>
+
+</head>
+<body>
+
+<hgroup>
+	<h1 id="chainvas">chainvas</h1>
+	<h2>Unit tests (sort of)</h2>
+</hgroup>
+
+<p class="legend">
+	<span class="pass">Pass</span>
+	<span class="fail">Fail</span>
+	<span class="error">Error</span>
+</p>
+
+<script src="assert.js"></script>
+<script src="chainvas.js"></script>
+<script>
+// Tests
+assert('Core', {
+	'Chainvas.extend': function() {
+		var o = { foo: 'bar' }
+		Chainvas.extend(o, { baz: true, test:1 });
+		
+		return [!!o.baz, o.test === 1, o.foo === 'bar'];
+	},
+	
+	'Chainvas.chainablize': function () {
+		var Foo = function() {};
+		Foo.prototype.bar = function() {};
+		Chainvas.chainablize(Foo);
+		var foo = new Foo();
+		
+		return foo.bar() === foo;
+	},
+	
+	'Chainvas.helpers (prop, single)': function () {
+		var Foo = function() {};
+		Chainvas.helpers(Foo);
+		var foo = new Foo(),
+			ret = foo.prop('meaning', 42);
+		
+		return foo.meaning === 42;
+	},
+	
+	'Chainvas.helpers (prop, multiple)': function () {
+		var Foo = function() {};
+		Chainvas.helpers(Foo, {
+			'getTheMeaning': function() { return 42; }
+		});
+		var foo = new Foo(),
+			ret = foo.prop({'meaning': 42, unicorns: 'lots'});
+		
+		return [foo.meaning === 42, foo.unicorns === 'lots'];
+	},
+	
+	'Chainvas.helpers (extras)': function () {
+		var Foo = function() {};
+		Chainvas.helpers(Foo, {
+			'getTheMeaning': function() { return 42; }
+		});
+		var foo = new Foo();
+		
+		return foo.getTheMeaning() === 42;
+	},
+	
+	'Chainvas.global': function () {
+		window.Foo = function() {};
+		Foo.prototype.bar = function() { this.meaning = 42; }
+		Chainvas.global('Foo');
+		var foo = new Foo();
+		window.Foo = undefined; // delete window.Foo throws error in IE8
+		
+		return [foo.prop, foo.bar() === foo, foo.meaning === 42];
+	}
+});
+
+assert('DOM module', {
+	'prop': function() {
+		var a = document.createElement('p'),
+			b = a.prop('title', 'foo');
+		
+		return [a === b, a.title === 'foo'];
+	},
+	
+	'setAttribute': function() {
+		var a = document.createElement('a'),
+			b = a.setAttribute('title', 'foo');
+
+		return [a === b, a.title === 'foo', b.getAttribute];
+	},
+	
+	'addEventListener': function() {
+		var a = document.createElement('a'), 
+			b = a.addEventListener('click', function() {}, false);
+		
+		return a === b;
+	},
+	
+	'CSSOM': function() {
+		var a = document.createElement('span').style,
+			b = a.setProperty('color', 'red', null)
+					.prop('backgroundColor', 'green')
+					.removeProperty('color');
+
+		return /background-color:\s*green;?/i.test(a.cssText);
+	},
+	
+	'CSSOM (old IE style)': function() {
+		var a = document.createElement('span').style,
+			b = a.setAttribute('color', 'red')
+					.prop('backgroundColor', 'green')
+					.removeAttribute('color');
+
+		return /background-color:\s*green;?/i.test(a.cssText);
+	},
+	
+	'classList': function() {
+		var a = document.createElement('span'),
+			b = a.classList;
+			c = b.add('foo').add('bar').toggle('baz');
+		
+		return [c === true, a.className === 'foo bar baz'];
+	}
+});
+
+assert('Canvas module', {
+	'prop, fillRect': function() {
+		var a = document.createElement('canvas'),
+			b = a.getContext('2d'),
+			c = b.prop('fillStyle', 'red').fillRect(0,0,300,150).getImageData(0,0,1,1).data;
+
+		return [c[0] === 255, c[1] === 0, c[2] === 0, c[3] === 255];
+	}
+});
+
+</script>
+	
+</body>
+</html>
