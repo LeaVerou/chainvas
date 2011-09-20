@@ -1,5 +1,5 @@
 /**
- * Chainvas: Make APIs chainable and enhance the canvas API
+ * Chainvas: Chaining for everyone!
  * @author Lea Verou
  * MIT license http://www.opensource.org/licenses/mit-license.php
  */
