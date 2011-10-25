@@ -27,7 +27,7 @@ body, #toc {
 	-moz-border-image: url(img/cloth.png) 33.33% round; /* FF buggy w/ border-image SVGs */
 	-o-border-image: url(img/cloth.svg) 33.33% round;
 	-webkit-border-image: url(img/cloth.svg) 33.33% round;
-	border-image: url(img/cloth.svg) 33.33% round;
+	border-image: url(img/cloth.svg) 33.33% round fill;
 }
 
 /*
