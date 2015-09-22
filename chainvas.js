@@ -176,3 +176,9 @@ Chainvas.global('CanvasRenderingContext2D', {
 		  .closePath();
 	}
 });
+
+/**
+ * Chainvas module: CanvasGradient
+ */
+Chainvas.global('CanvasGradient');
+
