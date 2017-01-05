@@ -104,7 +104,7 @@ var self = window.Chainvas = {
 	utils: {
 		// IE8 misreports host object methods as objects
 		isFunction: function(fn) {
-			var cl = Object.prototype.toString.call(fn);
+			var cl = ({}).toString.call(fn);
 			
 			return cl === '[object Function]' ||
 				(cl === '[object Object]' &&
