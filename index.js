@@ -111,8 +111,12 @@ form.elements.compression[1].onclick = function() {
 				codeParts.push(code[id].code);
 			}
 		}
-		
-		this.href = 'data:text/javascript;charset=utf-8,' + encodeURIComponent(codeParts.join('\r\n'));
+		var blob = new Blob(
+			[codeParts.join('\r\n')],
+			{type : 'text/javascript'}
+		);
+		this.href = URL.createObjectURL(blob);
+		this.download = 'chainvas.js';
 	};
 };
 
