@@ -24,7 +24,7 @@ h2, h3, footer, .download, form > a {
 
 body, #toc {
 	border: 20px solid transparent;
-	-moz-border-image: url(img/cloth.png) 33.33% round; /* FF buggy w/ border-image SVGs */
+	-moz-border-image: url(img/cloth.png) 33.33% fill round; /* FF buggy w/ border-image SVGs */
 	-o-border-image: url(img/cloth.svg) 33.33% round;
 	-webkit-border-image: url(img/cloth.svg) 33.33% round;
 	border-image: url(img/cloth.svg) 33.33% round fill;
